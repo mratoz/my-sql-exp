@@ -3,28 +3,28 @@ set define off
 prompt Dropping T_TST_ROWTOCOL...
 drop table T_TST_ROWTOCOL cascade constraints;
 prompt Creating T_TST_ROWTOCOL...
-create table T_TST_ROWTOCOL
+CREATE TABLE t_tst_rowtocol
 (
-  id  NUMBER(2),
-  val VARCHAR2(20)
+  ID   VARCHAR2(2),
+  val  NUMBER(10)
 )
 ;
 
 prompt Loading T_TST_ROWTOCOL...
-insert into T_TST_ROWTOCOL (id, val)
-values (1, '11');
-insert into T_TST_ROWTOCOL (id, val)
-values (2, '12');
-insert into T_TST_ROWTOCOL (id, val)
-values (3, '13');
-insert into T_TST_ROWTOCOL (id, val)
-values (4, '14');
-insert into T_TST_ROWTOCOL (id, val)
-values (5, '15');
-insert into T_TST_ROWTOCOL (id, val)
-values (6, '16');
-insert into T_TST_ROWTOCOL (id, val)
-values (7, '17');
+insert into T_TST_ROWTOCOL (val, ID)
+values (1, '1');
+insert into T_TST_ROWTOCOL (val, ID)
+values (2, '2');
+insert into T_TST_ROWTOCOL (val, ID)
+values (3, '3');
+insert into T_TST_ROWTOCOL (val, ID)
+values (4, '4');
+insert into T_TST_ROWTOCOL (val, ID)
+values (5, '5');
+insert into T_TST_ROWTOCOL (val, ID)
+values (6, '6');
+insert into T_TST_ROWTOCOL (val, ID)
+values (7, '7');
 commit;
 prompt 7 records loaded
 set feedback on
@@ -44,4 +44,18 @@ SELECT SUM(DECODE(T.ID, 1, T.VAL, 0)) AS JAN,
        SUM(DECODE(T.ID, 10, T.VAL, 0)) AS OCT,
        SUM(DECODE(T.ID, 11, T.VAL, 0)) AS NOV,
        SUM(DECODE(T.ID, 12, T.VAL, 0)) AS DEC
-  FROM T_TST_ROWTOCOL T
+  FROM T_TST_ROWTOCOL T;
+-- Another solution
+SELECT SUM(CASE WHEN T.ID = 1 THEN T.VAL ELSE 0 END) AS JAN,
+       SUM(CASE WHEN T.ID = 2 THEN T.VAL ELSE 0 END) AS FEB,
+       SUM(CASE WHEN T.ID = 3 THEN T.VAL ELSE 0 END) AS MAR,
+       SUM(CASE WHEN T.ID = 4 THEN T.VAL ELSE 0 END) AS APR,
+       SUM(CASE WHEN T.ID = 5 THEN T.VAL ELSE 0 END) AS MAY,
+       SUM(CASE WHEN T.ID = 6 THEN T.VAL ELSE 0 END) AS JUN,
+       SUM(CASE WHEN T.ID = 7 THEN T.VAL ELSE 0 END) AS JUL,
+       SUM(CASE WHEN T.ID = 8 THEN T.VAL ELSE 0 END) AS AUG,
+       SUM(CASE WHEN T.ID = 9 THEN T.VAL ELSE 0 END) AS SEP,
+       SUM(CASE WHEN T.ID = 10 THEN T.VAL ELSE 0 END) AS OCT,
+       SUM(CASE WHEN T.ID = 11 THEN T.VAL ELSE 0 END) AS NOV,
+       SUM(CASE WHEN T.ID = 12 THEN T.VAL ELSE 0 END) AS DEC
+  FROM T_TST_ROWToCOL T;  
