@@ -1,0 +1,6 @@
+export ORACLE_HOME=/opt/oracle/product/11.2.0/dbhome_1
+ORACLE_BASE=/opt/oracle
+ORACLE_SID=orcl
+SQLPATH=/home/oracle/SQLInit
+PATH=$ORACLE_HOME/bin:$PATH
+export ORACLE_BASE ORACLE_SID ORACLE_HOME SQLPATH PATH

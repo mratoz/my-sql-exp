@@ -1,0 +1,26 @@
+-- SYS user
+GRANT CREATE SYNONYM TO scott;
+GRANT CREATE ANY VIEW TO scott;
+GRANT SELECT ON v_$statname TO scott;
+GRANT SELECT ON v_$mystat TO scott;
+GRANT SELECT ON v_$latch TO scott;
+
+-- create synonym in scott
+CREATE SYNONYM v$statname FOR SYS.v_$statname;
+CREATE SYNONYM v$mystat FOR SYS.v_$mystat;
+CREATE SYNONYM v$latch FOR SYS.v_$latch;
+CREATE SYNONYM v$timer FOR SYS.v_$timer;
+
+-- create view in scott
+CREATE OR REPLACE VIEW STATS
+AS
+SELECT 'STAT....' || a.name NAME, b.value
+  FROM v$statname a, v$mystat b
+ WHERE a.statistic# = b.statistic#
+UNION ALL
+SELECT 'LATCH.' || NAME, gets
+  FROM v$latch
+UNION ALL
+SELECT 'STAT...Elapsed Time', hsecs
+  FROM v$timer;
+  
