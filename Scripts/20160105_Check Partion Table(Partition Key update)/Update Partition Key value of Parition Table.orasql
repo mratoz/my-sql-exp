@@ -1,0 +1,40 @@
+DROP TABLE T_TEST_PARTITION;
+
+CREATE TABLE T_TEST_PARTITION
+(
+    PT_KEY      NUMBER(3),
+	DEST_Text   VARCHAR2(20)
+)
+PARTITION BY RANGE(PT_KEY)
+(
+    PARTITION P10 VALUES LESS THAN (10),
+	PARTITION P50 VALUES LESS THAN (50),
+	PARTITION P100 VALUES LESS THAN (100),
+	PARTITION P1000 VALUES LESS THAN (999)
+);
+
+INSERT INTO T_TEST_PARTITION(PT_KEY, DEST_Text) VALUES(1, 'one');
+INSERT INTO T_TEST_PARTITION(PT_KEY, DEST_Text) VALUES(20, 'twenty');
+INSERT INTO T_TEST_PARTITION(PT_KEY, DEST_Text) VALUES(3, 'three');
+INSERT INTO T_TEST_PARTITION(PT_KEY, DEST_Text) VALUES(100, 'hundred');
+INSERT INTO T_TEST_PARTITION(PT_KEY, DEST_Text) VALUES(512, 'halfkilo');
+INSERT INTO T_TEST_PARTITION(PT_KEY, DEST_Text) VALUES(888, 'goodnum');
+commit;
+
+-- unable to update the partition key value
+update T_TEST_PARTITION
+   set PT_KEY=998
+ where PT_KEY=1;
+
+alter table T_TEST_PARTITION enable row movement;
+-- After enable the table row movement, we can update the partition key now.
+update T_TEST_PARTITION
+   set PT_KEY=998
+ where PT_KEY=1;
+ 
+alter table T_TEST_PARTITION disable row movement; 
+
+-- Select the data on a single partition
+select *
+  from T_TEST_PARTITION
+  partition(p50);
