@@ -1,0 +1,55 @@
+DROP TABLE TEST_A;
+
+DROP TABLE TEST_B;
+
+create table TEST_A(ID_KEY numeric(2), DES_ID VARCHAR(10));
+
+create table TEST_B(ID_KEY numeric(2), DES_ID2 VARCHAR(10));
+
+
+INSERT INTO TEST_A VALUES(1, 'One');
+
+INSERT INTO TEST_A VALUES(2, 'Two');
+
+INSERT INTO TEST_A VALUES(3, 'Three');
+
+INSERT INTO TEST_A VALUES(4, 'Four');
+
+INSERT INTO TEST_B VALUES(3, 'ThreeB');
+
+INSERT INTO TEST_B VALUES(4, 'Four');
+
+INSERT INTO TEST_B VALUES(5, 'Five');
+
+commit;
+
+--
+select a.ID_KEY, a.DES_ID, b.ID_KEY, b.DES_ID2
+  from TEST_A a LEFT JOIN TEST_B b on a.ID_KEY = b.ID_KEY and a.DES_ID = b.DES_ID2
+  order by a.ID_KEY;
+
+ 
+
+select a.ID_KEY, a.DES_ID, b.ID_KEY, b.DES_ID2
+  from TEST_A a LEFT JOIN TEST_B b on a.ID_KEY = b.ID_KEY and a.DES_ID <> b.DES_ID2
+ order by a.ID_KEY;
+
+ 
+
+ 
+
+--1,2,4
+
+select a.ID_KEY, a.DES_ID, b.ID_KEY, b.DES_ID2
+  from TEST_A a LEFT JOIN TEST_B b on a.ID_KEY = b.ID_KEY and a.DES_ID <> b.DES_ID2
+  where b.ID_KEY is null
+  order by a.ID_KEY;
+
+ 
+
+--1,2,3
+select a.ID_KEY, a.DES_ID, b.ID_KEY, b.DES_ID2
+  from TEST_A a LEFT JOIN TEST_B b on a.ID_KEY = b.ID_KEY and a.DES_ID = b.DES_ID2
+  where b.ID_KEY is null
+  order by a.ID_KEY;
+
